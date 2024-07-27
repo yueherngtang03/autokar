@@ -6,7 +6,7 @@ from openai import OpenAI
 import os
 import gpt
 
-uri = "mongodb+srv://yueherngt:123@gpt-db.nxtbkwi.mongodb.net/?retryWrites=true&w=majority&appName=gpt-db"
+uri = os.environ['AUTOKAR_MONGO']
 client = OpenAI(api_key=os.environ['OPEN_NANNY'])
 client = pymongo.MongoClient(uri)
 try:
