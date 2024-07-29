@@ -1,10 +1,13 @@
 import pymongo
 import streamlit as st
-import ssl
 from datetime import datetime
 from openai import OpenAI
 import os
 import gpt
+import bcrypt
+
+def check_password(password, hashed_password):
+    return bcrypt.checkpw(password.encode(), hashed_password)
 
 uri = os.environ['AUTOKAR_MONGO']
 client = OpenAI(api_key=os.environ['OPEN_NANNY'])
@@ -54,7 +57,7 @@ def get_user(username):
 def login(username, password):
     user = collection.find_one({"username": username})
     if user:
-        if user['password'] == password:
+        if check_password(password,user['password']):
             return True
     return False
 

@@ -2,7 +2,6 @@ import time
 from openai import OpenAI
 import streamlit as st
 from datetime import datetime
-import hashlib
 import base64
 from PIL import Image
 from io import BytesIO
@@ -14,7 +13,6 @@ import gpt
 def greet_based_on_time():
     now = datetime.now()
     current_hour = now.hour
-    print(current_hour)
 
     if 5 <= current_hour < 12:
         return "Good Morning,"
@@ -275,7 +273,7 @@ with tab4:
             if new_pw != new_pw_retype:
                 st.error("Retyped Password Does Not Match")
             else:
-                if db.login(st.session_state.log_in_user, hash_password(old_pw)):
+                if db.login(st.session_state.log_in_user, old_pw):
                     db.change_password(st.session_state.log_in_user, hash_password(new_pw_retype))
                     st.success("Password Changed Successfully!")
                     time.sleep(2)

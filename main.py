@@ -1,14 +1,16 @@
 import streamlit as st
-import hashlib
 import base64
 from PIL import Image
 from io import BytesIO
 import time
 import database as db
+import bcrypt
 
 
 def hash_password(password):
-    return hashlib.md5(password.encode()).hexdigest()
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode(), salt)
+    return hashed_password
 
 def navigate_to_signup():
     st.session_state.page = "signup"
@@ -49,7 +51,7 @@ if st.session_state.login:
         login_button = st.button("Login")
 
         if login_button:
-            if db.login(username, hash_password(password)):
+            if db.login(username, password):
                 st.success(f"Welcome {username}")
                 time.sleep(2)
                 st.session_state.log_in_user = username
